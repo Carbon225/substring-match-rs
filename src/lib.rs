@@ -1,22 +1,21 @@
 #[cfg(test)]
 mod tests;
+mod python;
 
 use std::collections::HashSet;
 use suffix::SuffixTable;
 
-pub struct SubstringMatcher<'s, 't> {
-    suffix_table: SuffixTable<'s, 't>,
+pub struct SubstringMatcher {
+    suffix_table: SuffixTable<'static, 'static>,
 }
 
-impl<'s, 't> SubstringMatcher<'s, 't> {
-    pub fn new<'a>(texts: impl Iterator<Item = &'a str>) -> SubstringMatcher<'s, 't> {
+impl SubstringMatcher {
+    pub fn new<'a>(texts: impl Iterator<Item = &'a str>) -> Self {
         let text = texts.fold(String::new(), |a, b| a + "\0" + b) + "\0";
-        SubstringMatcher {
-            suffix_table: SuffixTable::new(text),
-        }
+        Self { suffix_table: SuffixTable::new(text) }
     }
 
-    pub fn find(&self, pattern: &str) -> Vec<&str> {
+    pub fn find<'a, 'b>(&'a self, pattern: &'b str) -> Vec<&'a str> {
         let text = self.suffix_table.text();
         let positions = self.suffix_table.positions(pattern);
         // is there a better way to remove duplicates?
