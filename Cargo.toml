@@ -1,7 +1,13 @@
 [package]
 name = "substring-match"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
+authors = ["Carbon225 <carbon225@proton.me>"]
+readme = "README.md"
+license = "MIT"
+keywords = ["substring", "string", "match", "search", "suffixtree", "suffixarray", "suffix", "array", "tree"]
+homepage = "https://github.com/Carbon225/substring-match-rs"
+repository = "https://github.com/Carbon225/substring-match-rs.git"
 
 [lib]
 name = "substring_match"
