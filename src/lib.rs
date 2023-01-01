@@ -17,19 +17,9 @@ impl SubstringMatcher {
 
     pub fn find<'a, 'b>(&'a self, pattern: &'b str) -> impl Iterator<Item = &'a str> {
         let text = self.suffix_table.text();
-        let positions = self.suffix_table.positions(pattern);
-        // is there a better way to remove duplicates?
-        let mut matches = HashSet::new();
-        positions.iter()
-            .filter_map(move |&pos| {
-                let pos = pos as usize;
-                let start = text[..pos].rfind('\0').unwrap() + 1;
-                if matches.insert(start) {
-                    let end = text[pos..].find('\0').unwrap() + pos;
-                    Some(&text[start..end])
-                } else {
-                    None
-                }
-            })
+        self.suffix_table.positions(pattern).into_iter()
+            .map(|&i| text[..i as usize].rfind('\0').unwrap() + 1)
+            .collect::<HashSet<_>>().into_iter()
+            .map(|i| &text[i..text[i..].find('\0').unwrap() + i])
     }
 }
