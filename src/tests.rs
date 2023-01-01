@@ -8,7 +8,7 @@ fn test_find_simple() {
         "pineapple tree",
     ];
     let matcher = SubstringMatcher::new(data.iter().map(|s| s.as_ref()));
-    let mut result = matcher.find("apple");
+    let mut result: Vec<&str> = matcher.find("apple").collect();
     result.sort();
     assert_eq!(result, &["apple", "pineapple tree"]);
 }
@@ -35,7 +35,7 @@ fn test_find_unicode() {
         "0000000000000000000000000", "0000000000000000000000001", "000000000000000000000000", "00000000000000000000000",
         "00000000000000000000001", "0000000000000000000000", "0000000000000000000001", "000000000000000000000"];
     let matcher = SubstringMatcher::new(data.iter().map(|s| s.as_ref()));
-    let result = matcher.find("0");
+    let result: Vec<&str> = matcher.find("0").collect();
     assert!(result.contains(&"00000000000000000000000"));
     assert_eq!(result.len(), data.len());
 }
@@ -62,5 +62,5 @@ fn test_find_bug() {
         "00000000000000000000001", "0000000000000000000000", "0000000000000000000001", "000000000000000000000"];
     let matcher = SubstringMatcher::new(data.iter().map(|s| s.as_ref()));
     let result = matcher.find("\x7f");
-    assert_eq!(result.len(), 0);
+    assert_eq!(result.count(), 0);
 }
